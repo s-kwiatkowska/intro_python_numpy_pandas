@@ -1,0 +1,1338 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{lesson1.2\_intro\_python\_numpy\_pandas}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{python-i-biblioteki}{%
+\section{Python i biblioteki}\label{python-i-biblioteki}}
+
+\hypertarget{celem-jest-przypomnieux107-lub-poznaux107-skux142adniux119-pythona-oraz-potrzebnych-bibliotek.}{%
+\subsubsection{Celem jest przypomnieć lub poznać składnię Pythona oraz
+potrzebnych
+bibliotek.}\label{celem-jest-przypomnieux107-lub-poznaux107-skux142adniux119-pythona-oraz-potrzebnych-bibliotek.}}
+
+Te ćwiczenia są obowiązkowe, jeśli chcesz sobie przypomnieć lub poznać
+potrzebne podstawy \href{https://bit.ly/2O0HJFQ}{Python} oraz potrzebne
+biblioteki.
+
+Oczywiście to będzie tylko kawałek wiedzy, która nam się przyda. Sam
+język Python, jak i biblioteki, wymagają znacznie więcej czasu niż
+godzinka, ale musimy od czegoś zacząć :).
+
+\textbf{Uwaga!} Jeśli czujesz się pewnie z Python i bibliotekami:
+\href{https://bit.ly/3sAqEl2}{numpy},
+\href{https://bit.ly/2O4s8Fm}{pandas} to zapraszam do kolejnego
+ćwiczenia -
+\textbf{\href{./lesson1.3_basic_model_predict_name.ipynb}{lesson1.3}}.
+
+Natomiast jeśli czujesz, że jest to zbyt trudne, to przypominam o
+notebooku ``\href{step_by_step.ipynb}{krok po kroku}'', w którym na
+wideo jeszcze dokładniej tłumaczę, co się dzieje.
+
+    \hypertarget{krok-po-kroku}{%
+\subsubsection{Krok po kroku}\label{krok-po-kroku}}
+
+Jeśli wolisz najpierw słuchać i oglądać, to obejrzyj nagranie poniżej,
+które omawia tę lekcję.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}html}
+\PY{p}{\PYZlt{}}\PY{n+nt}{iframe} \PY{n+na}{style}\PY{o}{=}\PY{l+s}{\PYZdq{}height:500px;width:100\PYZpc{}\PYZdq{}} \PY{n+na}{src}\PY{o}{=}\PY{l+s}{\PYZdq{}https://bit.ly/39pJ40n\PYZdq{}} \PY{n+na}{frameborder}\PY{o}{=}\PY{l+s}{\PYZdq{}0\PYZdq{}} \PY{n+na}{allow}\PY{o}{=}\PY{l+s}{\PYZdq{}autoplay; encrypted\PYZhy{}media\PYZdq{}} \PY{n+na}{allowfullscreen}\PY{p}{\PYZgt{}}\PY{p}{\PYZlt{}}\PY{p}{/}\PY{n+nt}{iframe}\PY{p}{\PYZgt{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \hypertarget{python-3.7}{%
+\subsection{Python (3.7)}\label{python-3.7}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello world!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Hello world!
+    \end{Verbatim}
+
+    \textbf{Uwaga!} Wykonując jakąś komórkę w \emph{Jupyter}, zwracana jest
+wartość ostatniego wiersza. W następnej komórce jest zakomentowany
+wiersz z \texttt{\#print(name)}. Pamiętaj jednak, że samo
+\texttt{"name"} da dokładnie to, co w cudzysłowiu. Możesz to sprawdzić.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jacek}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{name}
+\PY{c+c1}{\PYZsh{}print(name)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Jacek'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sandra}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{name}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Sandra'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{years} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2015}\PY{p}{,} \PY{l+m+mi}{2016}\PY{p}{,} \PY{l+m+mi}{2017}\PY{p}{,} \PY{l+m+mi}{2018}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}print(years)}
+\PY{n}{years}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[2015, 2016, 2017, 2018]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{years} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2020}\PY{p}{,} \PY{l+m+mi}{2021}\PY{p}{,} \PY{l+m+mi}{2022}\PY{p}{,} \PY{l+m+mi}{2023}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{years}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[2020, 2021, 2022, 2023]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{years} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2015}\PY{p}{,} \PY{l+m+mi}{2019}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}range(start, finish + 1)}
+\PY{n}{years}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[2015, 2016, 2017, 2018]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Uwaga!}
+
+Funkcja \texttt{range} generuje przedział od \ldots{} do, natomiast
+zwróć uwagę, że \texttt{range} zatrzymuje się tuż przed ``do'' (nie
+włączając). Na przykład jeśli chcemy wygenerować przedział do roku 2018,
+to należy podać o jeden więcej (czyli 2019). Wtedy \texttt{range}
+zatrzyma się tuż przed (czyli na roku 2018).
+
+Stąd jest w komentarzu: \texttt{finish\ +\ 1}, do oczekiwanego końca
+należy dodać jeszcze jeden.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{years}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}pierwszy element}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{years}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}drugi element}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{years}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}ostatni element}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{years}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}przedostatni element}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2015
+2016
+2018
+2017
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jan Kowalski}\PY{l+s+s2}{\PYZdq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{name}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}pierwsza litera}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{name}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}ostatnia litera}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{name}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}małe litery}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{name}\PY{o}{.}\PY{n}{upper}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}duże litery}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{name}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}rozdziel string na listę używając danego separatora (w tym przypadku jest to spacja)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+J
+i
+jan kowalski
+JAN KOWALSKI
+['Jan', 'Kowalski']
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{years} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2010}\PY{p}{,} \PY{l+m+mi}{2019}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{year} \PY{k}{for} \PY{n}{year} \PY{o+ow}{in} \PY{n}{years}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{year} \PY{o}{*} \PY{l+m+mi}{2} \PY{k}{for} \PY{n}{year} \PY{o+ow}{in} \PY{n}{years}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}podwojone wartości}
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{year} \PY{o}{*} \PY{l+m+mi}{2} \PY{k}{for} \PY{n}{year} \PY{o+ow}{in} \PY{n}{years} \PY{k}{if} \PY{n}{year} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}podwój wartość, jeśli to liczba parzysta}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+[4020, 4022, 4024, 4026, 4028, 4030, 4032, 4034, 4036]
+[4020, 4024, 4028, 4032, 4036]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{p}{[}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{years}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Uwaga!} Tu łatwo przeoczyć, że całość \texttt{for} jest w
+nawiasach kwadratowych, co dla osoby początkującej może wydawać się
+dziwne - zamiast wartości tablicy mamy kod. Przyjrzyj się dokładniej.
+Zwróć uwagę, że są to nawiasy kwadratowe i takie coś:
+\texttt{print(year\ for\ year\ in\ years)} nie działa.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{output} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{year} \PY{o+ow}{in} \PY{n}{years}\PY{p}{:}
+    \PY{k}{if} \PY{n}{year} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:} 
+        \PY{n}{output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{year}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{output}  
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[4020, 4024, 4028, 4032, 4036]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{numpy}{%
+\subsection{\texorpdfstring{\href{https://bit.ly/3u2hM8m}{numpy}}{numpy}}\label{numpy}}
+
+To biblioteka do pracy z wektorami lub macierzami. Jest bardzo szybka (w
+porównaniu do ``czystego'' Pythona) i dlatego będziemy jej używać.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np} \PY{c+c1}{\PYZsh{}przyjęło się, że dla numpy jest nadawy alias \PYZdq{}np\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} tablica}
+\PY{n}{arr}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([1, 2, 3, 4, 5, 6])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{type}\PY{p}{(}\PY{n}{arr}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+numpy.ndarray
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([ 6,  8, 10])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+2.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+2.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{arr} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{)} \PY{c+c1}{\PYZsh{}tylko pierwszy element jest True (bo jest równy 1)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{arr} \PY{o}{==} \PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}tylko drugie element jest True (bo jest równy 2)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{arr} \PY{o}{\PYZgt{}} \PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}pierwsze dwa nie pasują (tylko 3 i wyżej są większe od 2), reszt pasuję}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{arr} \PY{o}{\PYZpc{}}\PY{k}{2} == 0) \PYZsh{} tylko parzyste
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ True False False False False False]
+[False  True False False False False]
+[False False  True  True  True  True]
+[False  True False  True False  True]
+    \end{Verbatim}
+
+    Zostawiamy tylko parzyste elementy w tablicy. Operator ``\%'' to jest
+\href{https://bit.ly/39njYPS}{modulo}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{arr}\PY{p}{[} \PY{n}{arr} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{==} \PY{l+m+mi}{0} \PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([2, 4, 6])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Na samym dole strony są dwa linki do 2-godzinnych webinarów na temat:
+python/numpy + pandas. Są tam również przykłady na githubie. Zapoznaj
+się z tym i spróbuj to wykonać samodzielnie (przynajmniej część).
+
+    \hypertarget{zadania-domowe}{%
+\section{Zadania domowe}\label{zadania-domowe}}
+
+    \hypertarget{zadanie-1.2.1}{%
+\subsection{Zadanie 1.2.1}\label{zadanie-1.2.1}}
+
+Masz listę od 0 do 18. Twoim zadaniem jest zostawić tylko liczby, które
+dzielą się na 4 bez reszty (czyli 0, 4, 8, 12 i 16).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{numbers} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{19}\PY{p}{)}
+\PY{p}{[} \PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{numbers} \PY{k}{if} \PY{n}{x} \PY{o}{\PYZpc{}} \PY{l+m+mi}{4} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[0, 4, 8, 12, 16]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    👉 Kliknij tutaj (1 klik), aby zobaczyć podpowiedź 👈
+
+Pamiętaj, że możesz to napisać w czystym Python (spróbuj), ale do
+bardziej eleganckiego rozwiązania warto użyć \texttt{numpy}.
+
+👉 Kliknij tutaj (1 klik), aby zobaczyć odpowiedź 👈
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_arr }\OperatorTok{=} \BuiltInTok{range}\NormalTok{(}\DecValTok{19}\NormalTok{)}
+\NormalTok{[ x }\ControlFlowTok{for}\NormalTok{ x }\KeywordTok{in}\NormalTok{ my\_arr }\ControlFlowTok{if}\NormalTok{ x }\OperatorTok{\%} \DecValTok{4} \OperatorTok{==} \DecValTok{0}\NormalTok{]}
+    
+\CommentTok{\#numpy}
+\NormalTok{my\_arr }\OperatorTok{=}\NormalTok{ np.array(my\_arr)}
+\NormalTok{my\_arr[ my\_arr }\OperatorTok{\%}\DecValTok{4} \OperatorTok{==} \DecValTok{0}\NormalTok{ ]}
+\end{Highlighting}
+\end{Shaded}
+
+Pamiętaj, aby zerkać tutaj dopiero, gdy już spróbujesz wykonać zadanie
+samodzielnie.
+
+    \hypertarget{wspuxf3ux142praca-i-komunikacja}{%
+\subsubsection{🤝🗣️ Współpraca 💪 i komunikacja
+💬}\label{wspuxf3ux142praca-i-komunikacja}}
+
+\begin{itemize}
+\tightlist
+\item
+  👉
+  \href{https://practicalmlcourse.slack.com/archives/C045CNLNH89}{\#pml\_module1}
+  - to jest miejsce, gdzie można szukać pomocy i dzielić się
+  doświadczeniem - także pomagać innym 🥰.
+\end{itemize}
+
+Jeśli masz pytanie, to staraj się jak najdokładniej je sprecyzować,
+najlepiej wrzuć screen z twoim kodem i błędem, który się pojawił ✔️
+
+\begin{itemize}
+\item
+  👉
+  \href{https://practicalmlcourse.slack.com/archives/C045CP89KND}{\#pml\_module1\_done}
+  - to miejsce, gdzie możesz dzielić się swoimi przerobionymi zadaniami,
+  wystarczy, że wrzucisz screen z \#done i numerem lekcji np.
+  \emph{\#1.2.1\_done}, śmiało dodaj komentarz, jeśli czujesz taką
+  potrzebę, a także rozmawiaj z innymi o ich rozwiązaniach 😊
+\item
+  👉
+  \href{https://practicalmlcourse.slack.com/archives/C044TFZLF1U}{\#pml\_module1\_ideas}-
+  tutaj możesz dzielić się swoimi pomysłami
+\end{itemize}
+
+    \hypertarget{zadanie-1.2.2}{%
+\subsection{Zadanie 1.2.2}\label{zadanie-1.2.2}}
+
+Masz dwie listy i chcesz zsumować każdą parę (np. pierwszy element
+list\_c{[}0{]} = list\_a{[}0{]} + list\_b{[}0{]}), w wyniku dostaniesz
+trzecią listę (\texttt{list\_c}). Następnie chcesz znaleźć medianę
+trzeciej listy (czyli \texttt{median\_list\_c}).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{n}{list\PYZus{}a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{list\PYZus{}b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
+\PY{n}{list\PYZus{}c} \PY{o}{=} \PY{n}{list\PYZus{}a} \PY{o}{+} \PY{n}{list\PYZus{}b}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{list\PYZus{}c}\PY{p}{)}
+\PY{n}{median\PYZus{}list\PYZus{}c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{list\PYZus{}c}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{median\PYZus{}list\PYZus{}c}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[10 12 14 16 18 20 22 24 26 28]
+19.0
+    \end{Verbatim}
+
+    👉 Kliknij tutaj (1 klik), aby zobaczyć podpowiedź 👈
+
+Utwórz dwie listy (o tej samej długości) i użyj funkcji np.median
+
+👉 Kliknij tutaj (1 klik), aby zobaczyć odpowiedź 👈
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{list\_a }\OperatorTok{=}\NormalTok{ np.arange(}\DecValTok{10}\NormalTok{)}
+\NormalTok{list\_b }\OperatorTok{=}\NormalTok{ np.arange(}\DecValTok{10}\NormalTok{) }\OperatorTok{*} \DecValTok{2}
+
+\NormalTok{np.median(list\_a }\OperatorTok{+}\NormalTok{ list\_b)}
+\end{Highlighting}
+\end{Shaded}
+
+Najpierw próbujesz zrobić zadanie samodzielnie, a dopiero potem tutaj
+zerkasz, prawda? ;)
+
+    \hypertarget{zadanie-1.2.3}{%
+\subsection{Zadanie 1.2.3}\label{zadanie-1.2.3}}
+
+Masz listę, która posiada 1000 elementów. Chcesz zostawić wszystkie
+elementy, które mają indeksy od 50 do 99 i od 325 do 388 (włącznie).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{random}
+
+\PY{n}{randomlist} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+    \PY{n}{n} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+    \PY{n}{randomlist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{randomlist}\PY{p}{)}
+
+\PY{n}{list1} \PY{o}{=} \PY{n}{randomlist}\PY{p}{[}\PY{l+m+mi}{50}\PY{p}{:}\PY{l+m+mi}{99}\PY{p}{]}
+\PY{n}{list2} \PY{o}{=} \PY{n}{randomlist}\PY{p}{[}\PY{l+m+mi}{325}\PY{p}{:}\PY{l+m+mi}{388}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Output:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{list1} \PY{o}{+} \PY{n}{list2}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[16, 71, 89, 77, 84, 3, 63, 76, 34, 98, 28, 25, 42, 55, 20, 62, 75, 46, 95, 85,
+73, 58, 93, 89, 16, 20, 74, 98, 43, 11, 8, 97, 54, 24, 68, 94, 54, 10, 77, 32,
+38, 3, 77, 89, 88, 100, 26, 45, 6, 21, 45, 70, 32, 33, 72, 5, 29, 86, 36, 88,
+31, 40, 72, 90, 66, 63, 24, 40, 21, 71, 41, 88, 16, 80, 34, 54, 80, 97, 54, 95,
+88, 83, 45, 88, 10, 24, 63, 2, 8, 35, 100, 87, 55, 47, 86, 11, 18, 82, 82, 91,
+32, 81, 56, 23, 74, 74, 54, 71, 84, 86, 14, 10, 66, 3, 52, 63, 50, 26, 79, 7,
+86, 58, 36, 10, 93, 84, 54, 83, 91, 83, 5, 90, 29, 76, 7, 15, 9, 54, 5, 27, 22,
+79, 11, 9, 84, 51, 14, 42, 63, 51, 76, 72, 83, 1, 46, 61, 69, 67, 68, 85, 91,
+20, 100, 99, 100, 28, 100, 19, 88, 39, 98, 42, 18, 26, 66, 93, 4, 65, 94, 20,
+90, 28, 40, 77, 85, 62, 44, 75, 93, 65, 32, 98, 10, 20, 88, 21, 19, 84, 3, 83,
+66, 66, 81, 36, 97, 60, 27, 98, 50, 34, 47, 85, 54, 60, 12, 56, 43, 90, 10, 71,
+39, 67, 77, 33, 92, 14, 84, 24, 62, 95, 53, 50, 9, 26, 46, 20, 25, 85, 25, 15,
+73, 25, 16, 33, 60, 31, 76, 28, 93, 71, 42, 97, 16, 77, 77, 7, 44, 78, 36, 23,
+69, 40, 25, 7, 8, 92, 81, 24, 18, 5, 13, 72, 37, 55, 14, 96, 85, 6, 42, 79, 88,
+27, 59, 67, 78, 63, 44, 19, 83, 10, 45, 47, 85, 31, 89, 47, 49, 23, 76, 42, 28,
+92, 96, 80, 66, 86, 59, 90, 73, 6, 62, 36, 57, 6, 5, 32, 20, 82, 37, 21, 94, 74,
+37, 11, 7, 36, 49, 1, 97, 27, 81, 2, 3, 2, 18, 42, 23, 21, 41, 59, 79, 86, 14,
+35, 17, 68, 9, 8, 40, 80, 78, 26, 26, 89, 13, 86, 83, 98, 72, 44, 44, 17, 66,
+23, 22, 12, 6, 86, 79, 32, 26, 80, 71, 93, 31, 4, 48, 47, 71, 84, 19, 52, 19,
+52, 72, 16, 51, 1, 51, 50, 45, 99, 52, 8, 64, 44, 59, 3, 17, 72, 24, 86, 81, 23,
+61, 4, 8, 44, 65, 41, 67, 14, 2, 41, 81, 27, 66, 28, 67, 10, 35, 39, 71, 22, 14,
+74, 40, 71, 14, 2, 83, 71, 17, 16, 14, 87, 40, 87, 3, 97, 88, 80, 40, 20, 62,
+37, 51, 54, 6, 35, 7, 76, 46, 68, 100, 28, 35, 84, 97, 86, 65, 44, 45, 66, 76,
+97, 19, 29, 18, 87, 90, 70, 49, 78, 79, 26, 7, 39, 10, 11, 32, 85, 38, 19, 7, 7,
+68, 33, 93, 10, 4, 81, 25, 85, 47, 28, 54, 46, 28, 63, 81, 80, 67, 75, 92, 2,
+32, 57, 8, 15, 6, 72, 97, 45, 40, 35, 55, 73, 54, 64, 64, 46, 58, 21, 47, 33,
+74, 5, 96, 99, 94, 80, 37, 54, 38, 86, 67, 60, 1, 40, 19, 13, 30, 88, 32, 1, 63,
+48, 18, 71, 87, 19, 1, 7, 86, 37, 47, 51, 57, 64, 84, 58, 29, 82, 84, 35, 74,
+45, 11, 51, 76, 41, 61, 15, 75, 51, 23, 92, 98, 11, 40, 6, 94, 95, 53, 22, 10,
+19, 26, 61, 10, 63, 76, 52, 96, 78, 76, 65, 49, 10, 10, 47, 73, 87, 10, 52, 64,
+32, 66, 52, 7, 69, 73, 30, 91, 92, 61, 59, 27, 93, 7, 100, 29, 76, 32, 61, 34,
+74, 72, 21, 36, 56, 99, 42, 48, 93, 4, 50, 63, 37, 97, 18, 83, 99, 90, 74, 94,
+1, 55, 33, 16, 46, 87, 78, 65, 33, 59, 58, 70, 33, 67, 16, 44, 56, 54, 39, 20,
+24, 2, 77, 73, 75, 71, 70, 10, 12, 90, 28, 67, 100, 19, 26, 82, 29, 7, 59, 47,
+12, 53, 12, 61, 4, 86, 36, 96, 52, 75, 20, 71, 33, 13, 28, 89, 67, 84, 75, 21,
+62, 57, 6, 77, 66, 70, 4, 73, 87, 1, 14, 62, 30, 86, 12, 53, 54, 67, 8, 10, 96,
+71, 72, 60, 42, 8, 72, 57, 12, 81, 44, 73, 18, 55, 90, 88, 69, 5, 58, 72, 72,
+90, 40, 98, 56, 31, 45, 25, 12, 12, 27, 32, 53, 24, 59, 91, 3, 56, 7, 67, 46, 4,
+38, 29, 18, 62, 25, 77, 62, 87, 92, 4, 11, 49, 15, 98, 80, 75, 21, 94, 56, 2,
+78, 63, 4, 20, 66, 92, 48, 94, 91, 27, 98, 4, 7, 17, 96, 53, 34, 54, 82, 42, 5,
+47, 63, 45, 96, 17, 45, 66, 48, 17, 84, 89, 31, 31, 70, 88, 41, 70, 69, 55, 40,
+80, 30, 59, 17, 76, 78, 84, 21, 48, 1, 42, 85, 8, 91, 72, 46, 17, 44, 14, 72,
+20, 96, 67, 66, 91, 31, 11, 91, 15, 79, 92, 45, 44, 7, 54, 48, 49, 89, 83, 35,
+1, 48, 13, 4, 30, 88, 50, 1, 61, 61, 1, 20, 78, 86, 98, 25, 51, 62, 4, 21, 10,
+45, 41, 20, 29, 15, 89, 55, 81, 18, 27, 71, 29, 78, 8, 26, 63, 88, 66, 81, 36,
+14, 48, 70, 70, 79, 90, 32, 89, 53, 19, 46, 24, 95, 68, 93, 51, 44, 16, 86, 68,
+73, 13, 99, 44, 98, 17, 33, 96, 16, 32, 48, 85, 16, 45, 99, 59, 85, 70, 66, 89,
+49, 78, 27, 12, 4, 4, 29, 37, 87, 16, 88, 87, 14, 67, 76, 40, 26, 65, 93, 65,
+98, 16, 78, 62, 17, 88, 90, 66, 23, 16, 72, 73, 65, 98, 10, 53, 53, 68, 23, 9,
+85, 57, 77, 80, 49, 84, 91, 12, 62]
+Output:
+[45, 70, 32, 33, 72, 5, 29, 86, 36, 88, 31, 40, 72, 90, 66, 63, 24, 40, 21, 71,
+41, 88, 16, 80, 34, 54, 80, 97, 54, 95, 88, 83, 45, 88, 10, 24, 63, 2, 8, 35,
+100, 87, 55, 47, 86, 11, 18, 82, 82, 36, 49, 1, 97, 27, 81, 2, 3, 2, 18, 42, 23,
+21, 41, 59, 79, 86, 14, 35, 17, 68, 9, 8, 40, 80, 78, 26, 26, 89, 13, 86, 83,
+98, 72, 44, 44, 17, 66, 23, 22, 12, 6, 86, 79, 32, 26, 80, 71, 93, 31, 4, 48,
+47, 71, 84, 19, 52, 19, 52, 72, 16, 51, 1]
+    \end{Verbatim}
+
+    \#
+
+👉 Kliknij tutaj (1 klik), aby zobaczyć podpowiedź 👈
+
+Należy użyć łącznie 4 filtrów (po dwie grupy, wewnątrz operatora i i na
+zewnątrz, między grupami, operator)
+
+👉 Kliknij tutaj (1 klik), aby zobaczyć odpowiedź 👈
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_list }\OperatorTok{=}\NormalTok{ np.arange(}\DecValTok{1000}\NormalTok{)}
+
+
+\NormalTok{frst\_ }\OperatorTok{=}\NormalTok{ (my\_list }\OperatorTok{\textgreater{}=} \DecValTok{50}\NormalTok{) }\OperatorTok{\&}\NormalTok{ (my\_list }\OperatorTok{\textless{}} \DecValTok{100}\NormalTok{)}
+\NormalTok{scnd\_ }\OperatorTok{=}\NormalTok{ (my\_list }\OperatorTok{\textgreater{}=} \DecValTok{325}\NormalTok{) }\OperatorTok{\&}\NormalTok{ (my\_list }\OperatorTok{\textless{}} \DecValTok{389}\NormalTok{)}
+\NormalTok{my\_list[  frst\_ }\OperatorTok{|}\NormalTok{ scnd\_ ]}
+\end{Highlighting}
+\end{Shaded}
+
+    \hypertarget{pandas}{%
+\subsection{\texorpdfstring{\href{https://bit.ly/3fmipW5}{pandas}}{pandas}}\label{pandas}}
+
+To biblioteka, która będzie nam bardzo potrzebna dalej. O
+\texttt{pandas} możesz myśleć jak o \texttt{numpy} na ``sterydach'' albo
+jak o tabelce z danymi jak w Excelu, w którym możesz w bardzo łatwy
+sposób filtrować i grupować dane, wybierać potrzebne kolumny itd.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd} \PY{c+c1}{\PYZsh{}przyjęło się nadawać dla pandas alias \PYZdq{}pd\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \texttt{Pandas} wewnątrz używa \texttt{numpy}, dlatego składnia na
+przykład filtrowania, jest podobna (lub czasem identyczna). Bardzo łatwo
+można także konwertować dane z \texttt{pandas} do \texttt{numpy}.
+
+W terminologii \texttt{numpy} wszystko obraca się wokół wektorów i
+macierzy. W pandas mamy podobnie dwie struktury: \texttt{Series}
+(odpowiednik wektora) i \texttt{DataFrame} (odpowiednik macierzy).
+
+Oczywiście \texttt{DataFrame} jest bardziej rozbudowany niż goła
+macierz. Zobacz poniżej.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{2018}\PY{p}{)}
+\PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{15}
+
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{height}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{140}\PY{p}{,} \PY{l+m+mi}{210}\PY{p}{,} \PY{n}{rows}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{,} \PY{n}{rows}\PY{p}{)}\PY{p}{,}
+\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    height  weight
+0      149      76
+1      161      56
+2      168      63
+3      160      71
+4      146      72
+5      165      73
+6      165      50
+7      187      73
+8      165      58
+9      200      57
+10     171      59
+11     162      70
+12     146      58
+13     182      67
+14     140      77
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Dostać się do danych w wybranej kolumnie można na co najmniej dwa
+sposoby.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{height}
+
+\PY{c+c1}{\PYZsh{}lub}
+
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{height}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0     149
+1     161
+2     168
+3     160
+4     146
+5     165
+6     165
+7     187
+8     165
+9     200
+10    171
+11    162
+12    146
+13    182
+14    140
+Name: height, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Dość często używany jest pierwszy sposób, bo ma mniej znaków (nie trzeba
+otwierać zamykać nawiasów kwadratowych i apostrofów). Natomiast druga
+wersja ma taką przewagę, że jest bardziej stabilna (np. jeśli kolumna
+nazywa się ``count'' to pierwsza wersja pomyli nazwę kolumny z nazwą
+funkcji \texttt{count()}, to samo dotyczy \texttt{min}, \texttt{max}
+itd). Sprawdźmy to.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{count}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{height}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'method'>
+<class 'pandas.core.series.Series'>
+    \end{Verbatim}
+
+    Przeanalizujmy to krok po kroku.
+
+Po pierwsze: stworzyliśmy nową kolumnę w \texttt{dataframe}, w naszym
+przypadku \texttt{df} o nazwie \texttt{count}. Jak widzisz, stworzenie
+nowej kolumny wymaga użycia drugiego sposobu (czyli dłuższego). Jeśli
+spróbujesz stworzyć kolumnę w ten sposób: \texttt{df.count\ =\ 1}, to
+kolumna się nie utworzy. Sprawdź :).
+
+Po drugie: możemy przypisać do kolumny stałą. W naszym przypadku to była
+1. Czyli wszystkie wiersze w kolumnie \texttt{count} mają wartość 1.
+
+Po trzecie: spróbujmy odwołać się do kolumn poprzez kropkę. Widzimy, że
+w przypadku z \texttt{height} to zadziałało, bo nie ma konfliktów w
+nazwie. Natomiast dla \texttt{count} to nie przeszło, bo uznało, że
+chodzi o funkcję o nazwie \texttt{count}, która zlicza ilość zamiast
+odwołać się do kolumny o nazwie \texttt{count}, dlatego należy
+podchodzić do tego ostrożnie.
+
+Stwórzmy jeszcze jedną kolumnę bazując na dwóch obecnych. Możemy np.
+podzielić wzrost przez wagę.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{height}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}lub}
+\PY{c+c1}{\PYZsh{}df[\PYZsq{}ratio\PYZsq{}] = df.height / df.weight}
+
+\PY{c+c1}{\PYZsh{}źle (nie zadziała)}
+\PY{c+c1}{\PYZsh{}df.ratio = df.height / df.weight}
+
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   height  weight  count     ratio
+0     149      76      1  1.960526
+1     161      56      1  2.875000
+2     168      63      1  2.666667
+3     160      71      1  2.253521
+4     146      72      1  2.027778
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Pojawiła się nowa kolumna o nazwie \texttt{ratio}. Zwróć uwagę, że
+dzieląc jedną kolumnę przez drugą, traktowaliśmy to jako pojedynczą
+wartość (ale pod spodem są wektory). Wiem, że część osób, które
+przyzwyczaiły się do standardowych \texttt{for} (czyli zwykłej pętli)
+mają trudności z przełączeniem myślenia na sposób wektorowy.
+
+Jeśli również tak masz, to zatrzymaj się na chwilę i spróbuj się
+przestawić. Zamiast operować pojedynczymi wartościami, operujesz
+wektorami:
+\texttt{df{[}\textquotesingle{}height\textquotesingle{}{]}\ /\ df{[}\textquotesingle{}weight\textquotesingle{}{]}}
+, gdzie \texttt{height} jest wektorem (lub \texttt{Series} w
+terminologii pandas) i \texttt{weight} również jest wektorem, a wynik
+działania również jest wektorem :).
+
+\hypertarget{filtrowanie}{%
+\subsection{Filtrowanie}\label{filtrowanie}}
+
+Kolejna operacja, która jest bardzo potrzebna, to filtrowanie. Załóżmy,
+że chcemy zostawić w tabelce ludzi, którzy mają mniej niż 145 cm lub
+więcej niż 195 cm.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[} \PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{height} \PY{o}{\PYZlt{}} \PY{l+m+mi}{145}\PY{p}{)} \PY{o}{|} \PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{height} \PY{o}{\PYZgt{}} \PY{l+m+mi}{195}\PY{p}{)} \PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    height  weight  count     ratio
+9      200      57      1  3.508772
+14     140      77      1  1.818182
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Zwróć uwagę na składnię.
+
+Po pierwsze, jeśli jest więcej niż jeden filtr, należy pojedyncze
+wyrażenia trzymać w nawiasach (to jest konieczne).
+
+Po drugie pomiędzy wyrażeniami logicznymi jest operator, w tym przypadku
+``lub'' czyli pionowa kreska (ang. pipe) ``\textbar{}''. Również może
+być operator ``i'', wtedy należy użyć
+\href{https://bit.ly/3rx5brO}{ampersandy/etki} ``\&''.
+
+Po trzecie, wyrażeń logicznych może być więcej niż jedno, ale powyżej
+trzech trudno jest to czytać i łatwo popełnić błąd.
+
+    \hypertarget{usuwanie-kolumn}{%
+\subsection{Usuwanie kolumn}\label{usuwanie-kolumn}}
+
+Czasem chcemy usunąć kolumnę i możemy zrobić to na wiele sposobów,
+jednak najlepszy jest jeden - użyć słowa kluczowego
+\textbf{\texttt{del}}.
+
+Jeśli natomiast odpalisz komórkę z usuwaniem dwa lub więcej razy, to
+pojawi się wyjątek \texttt{KeyError}. Dzieje się tak dlatego, że kolumna
+została już usunięta i trudno jest usunąć ją jeszcze raz (bo nie
+istnieje).
+
+Dlatego warto dodawać trochę więcej kodu, który najpierw sprawdzi, czy
+kolumna istnieje i jeśli tak, to usuwa ją. Dlaczego tak? Dlatego, że
+chcemy odpalać komórkę wiele razy i spodziewać się, że wynik za każdym
+razem będzie ten sam. Jeśli tego jeszcze teraz nie rozumiesz, to uwierz
+mi, że chcesz, aby taki był wynik :).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{df}\PY{p}{:} \PY{k}{del} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{zadanie-1.2.4}{%
+\section{Zadanie 1.2.4}\label{zadanie-1.2.4}}
+
+Zrób \texttt{dataframe}, który na początek zawiera dwie kolumny: -
+\textbf{age} (losowe wartości od 15 do 50) - \textbf{weight} (losowe
+wartości od 50 do 80)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{15}
+
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{n}{rows}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{,} \PY{n}{rows}\PY{p}{)}\PY{p}{,}
+\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    age  weight
+0    27      70
+1    23      61
+2    24      78
+3    26      60
+4    20      78
+5    30      79
+6    15      64
+7    31      68
+8    16      54
+9    27      73
+10   22      73
+11   21      59
+12   40      67
+13   35      73
+14   33      50
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \#
+
+👉 Kliknij tutaj (1 klik), aby zobaczyć podpowiedź 👈
+
+Zainspiruj się powyższym przykładem i zmień nazwę kolumny na
+\texttt{age}.
+
+👉 Kliknij tutaj (1 klik), aby zobaczyć odpowiedź 👈
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{np.random.seed(}\DecValTok{0}\NormalTok{)}
+\NormalTok{rows }\OperatorTok{=} \DecValTok{15}
+
+\NormalTok{df }\OperatorTok{=}\NormalTok{ pd.DataFrame(\{}
+    \StringTok{\textquotesingle{}age\textquotesingle{}}\NormalTok{: np.random.randint(}\DecValTok{15}\NormalTok{, }\DecValTok{50}\NormalTok{, rows),}
+    \StringTok{\textquotesingle{}weight\textquotesingle{}}\NormalTok{: np.random.randint(}\DecValTok{50}\NormalTok{, }\DecValTok{80}\NormalTok{, rows),}
+\NormalTok{\})}
+
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+    Dawniej (teraz już są inne standardy, ale pomijam ten wątek) uważało
+się, że dla chłopców/mężczyzn wzrost w cm to
+\texttt{wzrost\ =\ waga\ +\ 110}.
+
+Twoim zadaniem jest stworzyć nową kolumnę o nazwie \texttt{height},
+która będzie równa \texttt{weight\ +\ 110}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{height}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{l+m+mi}{110}
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    age  weight  height
+0    27      70     180
+1    23      61     171
+2    24      78     188
+3    26      60     170
+4    20      78     188
+5    30      79     189
+6    15      64     174
+7    31      68     178
+8    16      54     164
+9    27      73     183
+10   22      73     183
+11   21      59     169
+12   40      67     177
+13   35      73     183
+14   33      50     160
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{przydatne-linki}{%
+\subsection{Przydatne linki:}\label{przydatne-linki}}
+
+\begin{itemize}
+\tightlist
+\item
+  Ksiażka: \href{https://bit.ly/31ubHFw}{Python Data Science Handbook}
+\item
+  \href{https://bit.ly/3cwans0}{Webinar - python/numpy} +
+  \href{https://bit.ly/3u58eJQ}{github}
+\item
+  \href{https://bit.ly/3dcQd5r}{Webinar - pandas} +
+  \href{https://bit.ly/3u2jMxb}{github}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
